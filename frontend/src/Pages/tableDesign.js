@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import '../Styles/tableDesign.css';
 import { Helmet } from "react-helmet";
-import { BsFillArrowDownSquareFill , BsFillArrowUpSquareFill } from "react-icons/bs";
+import { BsFillArrowDownSquareFill, BsFillArrowUpSquareFill } from "react-icons/bs";
 
 function TableDesign() {
-  const initialValues= {columnName:"",columnOrder:1, isVisible:true}
+  const initialValues = { columnName: "", columnOrder: 1, isVisible: true }
 
   const [formValues, setFormValues] = useState(initialValues);
   const [Column, setColumn] = useState([]);
@@ -26,12 +26,10 @@ function TableDesign() {
 
   }, [Column]);
 
-  
-  const handleServiceChange = (e, index) => {
-    const { name, value  } = e.target;
-    setFormValues({...formValues, [name]:value});
 
-    console.log(formValues)
+  const handleServiceChange = (e, index) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
   };
 
   const handleServiceRemove = (id) => {
@@ -40,7 +38,7 @@ function TableDesign() {
     })
   };
 
-  const handleServiceAdd = (e,index) => {
+  const handleServiceAdd = (e, index) => {
     fetch('/columns/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -52,21 +50,21 @@ function TableDesign() {
     }).then(formValues.columnOrder++)
   };
 
-  const handlevisibleChange = (e,index,id) => {
-  
-    
-    const { name,type ,value,checked} = e.target;
-    setFormValues({...formValues, [name]: type==='checkbox' ? checked : value});
+  const handlevisibleChange = (e, index, id) => {
 
-    fetch('/columns/' +id, {
+
+    const { name, type, value, checked } = e.target;
+    setFormValues({ ...formValues, [name]: type === 'checkbox' ? checked : value });
+
+    fetch('/columns/' + id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-     
+
         isVisible: formValues.isVisible
       })
     })
-    
+
   };
 
 
@@ -82,20 +80,20 @@ function TableDesign() {
           <label htmlFor="service">Column(s)</label>
           {Column.map((item, index) => (
             <div key={index} className="services">
-              
-              <div className="delete-section">
-              
 
-                
-                  <button
-                    type="button"
-                    onClick={() => handleServiceRemove(item._id)}
-                    className="remove-btn"
-                  >
-                    <span>Delete</span>
-                  
-                  </button>
-                
+              <div className="delete-section">
+
+
+
+                <button
+                  type="button"
+                  onClick={() => handleServiceRemove(item._id)}
+                  className="remove-btn"
+                >
+                  <span>Delete</span>
+
+                </button>
+
 
 
 
@@ -106,11 +104,11 @@ function TableDesign() {
                   type="text"
                   id="service"
                   value={item.columnName}
-                
+
                   required
                 />
-  
-                {(Column.length -1 === index ) && (
+
+                {(Column.length - 1 === index) && (
                   <div className="addservice">
 
                     <button
@@ -125,7 +123,7 @@ function TableDesign() {
                       type="text"
                       id="service"
                       placeholder="New Column"
-                     
+
                       onChange={(e) => handleServiceChange(e, index)}
                       required
                     />
@@ -143,44 +141,44 @@ function TableDesign() {
               <div className="second-division">
                 {index !== 0 && (
                   <div className="orderButtons">
-                <button
+                    <button
                       type="button"
 
                       className="add-btn"
                     >
-                      <span><BsFillArrowUpSquareFill/> </span>
+                      <span><BsFillArrowUpSquareFill /> </span>
                     </button>
-               
-                </div>
+
+                  </div>
                 )}
-              
 
-              {index +1 !== Column.length && (
-                <div className="orderButtons">
-                <button
+
+                {index + 1 !== Column.length && (
+                  <div className="orderButtons">
+                    <button
                       type="button"
-               
+
                       className="add-btn"
                     >
-                      <span><BsFillArrowDownSquareFill/> </span>
+                      <span><BsFillArrowDownSquareFill /> </span>
                     </button>
-               
-                </div>)}
+
+                  </div>)}
 
                 <div className="checkbox">
-       
-                  <input class="form-check-input" name="isVisible" checked={checked ? !item.isVisible : item.isVisible}    type="checkbox" onChange={(e) => handlevisibleChange(e,index,item._id)} />
+
+                  <input class="form-check-input" name="isVisible" checked={checked ? !item.isVisible : item.isVisible} type="checkbox" onChange={(e) => handlevisibleChange(e, index, item._id)} />
                   <label class="form-check-label" for="flexCheckDefault">is Visible</label>
                 </div>
 
 
-              
 
 
 
-              
 
-                
+
+
+
 
               </div>
             </div>
@@ -189,7 +187,7 @@ function TableDesign() {
 
       </form>
 
-     
+
     </div>
 
   );

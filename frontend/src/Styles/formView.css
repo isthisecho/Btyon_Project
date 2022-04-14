@@ -11,3 +11,34 @@
 
 
 }
+
+.formMain{
+    display: flex;
+    
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+.forms{
+    display: flex;
+    flex-direction: row;
+    margin: 0 5px 0.5rem 0;
+    width: 50%;
+}
+
+.forminput{
+    margin-left: 2rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.buttondiv{
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: row;
+}
+.buttondiv button{
+    color: rgb(0, 208, 255);
+    border: 1px solid rgb(0, 208, 255);
+}

@@ -4,3 +4,8 @@
     position: relative;
     orientation: landscape;
 }
+.tableviewMain  button{
+    color: rgb(0, 208, 255);
+    border: 1px solid rgb(0, 208, 255);
+    border-radius: 5px;
+}

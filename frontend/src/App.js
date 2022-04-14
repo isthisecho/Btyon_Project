@@ -5,7 +5,6 @@ import TableView from './Pages/tableView';
 import FormView from './Pages/formView';
 import SystemLog from './Pages/systemlog';
 import Navbar from './Components/Navbar';
-import Table from './Pages/table';
 import {Route, Routes} from 'react-router-dom';
 function App() {
   return (
