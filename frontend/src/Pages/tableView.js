@@ -69,12 +69,12 @@ function TableView() {
                                     </td>
                                     <td>{item2._id}</td>
                                     {Columns.filter(visibility => visibility.isVisible === true).map((e,x)=>(
-                                        <div key={x}> 
+                                        <> 
                                          {[item2.Values[0].deger].map((item3, itemindex2) => (
                                     
                                             <td key={itemindex2}>{item3[e.columnName]}</td>
                                             ))}
-                                        </div>                                                                                                                                                           
+                                        </>                                                                                                                                                           
                         ))}                                   
                                 </tr>                   
                         ))}
