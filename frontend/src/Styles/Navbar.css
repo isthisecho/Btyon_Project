@@ -1,0 +1,30 @@
+.navbar{
+width: 100%;
+height: 90px;
+display: flex;
+flex-direction: row;
+position: fixed;
+z-index: 10;
+}
+
+.navbar button{
+    margin-top: 10px;
+    height: 40px;
+     width: 200px;
+    margin-right: 0.5rem;
+    color: black;
+    background-color: greenyellow;
+    border: 1px solid black;
+    border-radius: 15px;
+}
+
+
+
+.tableContainer{
+margin-left: 25%;
+}
+
+
+.recordContainer{
+margin-right: 25%;
+}

@@ -1,0 +1,41 @@
+GET http://localhost:5000/columns
+
+###
+
+DELETE http://localhost:5000/columns/62558ada9792547b6fb6dc28
+
+###
+GET http://localhost:5000/columns/62558ada9792547b6fb6dc28
+
+###
+
+PATCH http://localhost:5000/api/62484287e11869fcb1151daf
+Content-Type: application/json
+
+{
+   "person": [
+        {
+            "name": "cvcvee",
+            "surname": "rgergreg"
+           
+          
+            
+        }
+      ]
+  
+}
+
+###
+POST  http://localhost:5000/columns
+Content-Type: application/json
+
+{
+  "columnName": "deneme",
+  "columnOrder" : 3,
+  "isVisible" :false
+
+}
+
+###
+
+DELETE http://localhost:5000/api/62484252e11869fcb1151da5

@@ -1,0 +1,13 @@
+
+ *{
+    box-sizing: border-box;
+  }
+  
+.systemlogMain{
+    height: 100%;
+    width: 100%;
+    position: relative;
+    orientation: landscape;
+
+
+}
