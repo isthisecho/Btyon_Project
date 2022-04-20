@@ -75,28 +75,28 @@ function TableDesign() {
   
   const handleServiceChangeOrderUp = async (e,index, length) => {
     let temp = e[index].columnOrder;
-    let id =0;
-    let column=0;
+    // let id =0;
+    // let column=0;
 
 
-    for (let i = 0; i < length; i++) {
-      if(e[i].columnOrder == temp-1){
-        id=e[i]._id;
-        column =e[i].columnOrder
-      }
+    // for (let i = 0; i < length; i++) {
+    //   if(e[i].columnOrder == temp-1){
+    //     id=e[i]._id;
+    //     column =e[i].columnOrder
+    //   }
     
-    }
+    // }
     
     await fetch('/columns/' + e[index]._id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
 
-        columnOrder: column
+        columnOrder: e[index-1].columnOrder
       })
     })
 
-    await fetch('/columns/' + id, {
+    await fetch('/columns/' + e[index-1]._id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -114,28 +114,28 @@ function TableDesign() {
 
   const handleServiceChangeOrderDown = async (e,index, length) => {
     let temp = e[index].columnOrder;
-    let id =0;
-    let column=0;
+    // let id =0;
+    // let column=0;
 
 
-    for (let i = 0; i < length; i++) {
-      if(e[i].columnOrder== temp+1){
-        id=e[i]._id;
-        column =e[i].columnOrder
-      }
+    // for (let i = 0; i < length; i++) {
+    //   if(e[i].columnOrder== temp+1){
+    //     id=e[i]._id;
+    //     column =e[i].columnOrder
+    //   }
     
-    }
+    // }
     
     await fetch('/columns/' + e[index]._id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
 
-        columnOrder: column
+        columnOrder: e[index+1].columnOrder
       })
     })
 
-    await fetch('/columns/' +id, {
+    await fetch('/columns/' +e[index+1]._id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
