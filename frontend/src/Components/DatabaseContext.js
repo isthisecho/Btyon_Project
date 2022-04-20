@@ -15,6 +15,8 @@ export const DatabaseProvider = props => {
 
     const initialValues = { columnName: "", columnOrder: 1, isVisible: true }
     const [formValues, setFormValues] = useState(initialValues);
+    const checked = initialValues.isVisible.type;
+    
     const [deger,setDeger] = useState([]);
     const [SpecificRecord,setScpecificRecord] =useState([]);
     const [SpecificRecordID,setScpecificRecordID] =useState([]);
@@ -25,6 +27,8 @@ export const DatabaseProvider = props => {
     async function fetchData() {
         const response = await fetch("/columns")
         const data = await response.json();
+
+        data.sort(({ columnOrder: previousOrder }, { columnOrder: currentOrder }) => previousOrder - currentOrder);
         setColumn(data);
       
       }
@@ -33,6 +37,7 @@ export const DatabaseProvider = props => {
       async function fetchRecords() {
         const response = await fetch("/api")
         const data = await response.json();
+      
   
         setRecords(data);
        
@@ -63,6 +68,7 @@ export const DatabaseProvider = props => {
      SpecificRecordID:[SpecificRecordID,setScpecificRecordID],
      Flagged:[Flagged,setFlagged],
      Update:[Update,setUpdate],
+     checked,
      formValues:[formValues,setFormValues]}}>
     {props.children}
    </DatabaseContext.Provider>

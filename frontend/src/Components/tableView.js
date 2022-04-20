@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import '../Styles/tableView.css'
 import { DatabaseContext } from './DatabaseContext';
+
 function TableView() {
 
     const {Column} =useContext(DatabaseContext);

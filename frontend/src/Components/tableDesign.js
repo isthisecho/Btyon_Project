@@ -3,6 +3,7 @@ import '../Styles/tableDesign.css';
 import { Helmet } from "react-helmet";
 import { BsFillArrowDownSquareFill, BsFillArrowUpSquareFill } from "react-icons/bs";
 import { DatabaseContext } from "./DatabaseContext";
+import * as _ from 'lodash';
 function TableDesign() {
 
 
@@ -16,7 +17,7 @@ function TableDesign() {
 
   const [formValuesGet,setFormValues] = formValues;
   const [ColumnValue,setColumnValue] = Column;
-
+  const [columnOrderValue,setColumnOrderValue] = useState(0);
   const [UpdateValue,setUpdateValue] = Update;
 
     const handleServiceChange =  (e) => {
@@ -44,17 +45,107 @@ function TableDesign() {
     }).then(setUpdateValue(true));
   };
 
-  const handleServiceAdd = (e, index) => {
-    fetch('/columns/', {
-      method: 'POST',
+  const handleServiceAdd = async(e,index,length) => {
+    let a=0;
+ 
+   
+  
+      for (let i = 0; i < length; i++) {
+        if(a <e[i].columnOrder){
+          a=e[i].columnOrder;
+        }
+      
+      }
+
+      await fetch('/columns/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          columnName: formValuesGet.columnName,
+          columnOrder: ++a,
+          isVisible: formValuesGet.isVisible
+        })
+      })
+      setUpdateValue(true);
+    
+        
+        
+  }; 
+
+  
+  const handleServiceChangeOrderUp = async (e,index, length) => {
+    let temp = e[index].columnOrder;
+    let id =0;
+    let column=0;
+
+
+    for (let i = 0; i < length; i++) {
+      if(e[i].columnOrder == temp-1){
+        id=e[i]._id;
+        column =e[i].columnOrder
+      }
+    
+    }
+    
+    await fetch('/columns/' + e[index]._id, {
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        columnName: formValuesGet.columnName,
-        columnOrder: formValuesGet.columnOrder,
-        isVisible: formValuesGet.isVisible
-      })
-    }).then(setUpdateValue(true));
 
+        columnOrder: column
+      })
+    })
+
+    await fetch('/columns/' + id, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+
+        columnOrder: temp
+      })
+    })
+    setUpdateValue(true);
+    
+
+
+  };
+
+
+
+  const handleServiceChangeOrderDown = async (e,index, length) => {
+    let temp = e[index].columnOrder;
+    let id =0;
+    let column=0;
+
+
+    for (let i = 0; i < length; i++) {
+      if(e[i].columnOrder== temp+1){
+        id=e[i]._id;
+        column =e[i].columnOrder
+      }
+    
+    }
+    
+    await fetch('/columns/' + e[index]._id, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+
+        columnOrder: column
+      })
+    })
+
+    await fetch('/columns/' +id, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+
+        columnOrder: temp
+      })
+    })
+    setUpdateValue(true);
+    
+  
 
   };
 
@@ -87,13 +178,13 @@ function TableDesign() {
         <div className="form-field">
           <label htmlFor="service">Column(s)</label>
 
-          {ColumnValue.length === 0 && (
+           {ColumnValue.length === 0 && (
             <div className="services">
               <div className="addservice">
 
                 <button
                   type="button"
-                  onClick={handleServiceAdd}
+                  onClick={(e) => handleServiceAdd(e)}
                   className="add-btn"
                 >
                   <span>Add </span>
@@ -115,9 +206,9 @@ function TableDesign() {
               </div>
             </div>
 
-          )}
+          )} 
 
-          {ColumnValue.length !== 0 && ColumnValue.map((item, index) => (
+          {ColumnValue.length !== 0 &&    ColumnValue.map((item, index) => (
             <div key={index} className="services">
 
               <div className="delete-section">
@@ -156,7 +247,7 @@ function TableDesign() {
 
                     <button
                       type="button"
-                      onClick={handleServiceAdd}
+                      onClick={(e) => handleServiceAdd(ColumnValue,index,ColumnValue.length)}
                       className="add-btn"
                     >
                       <span>Add </span>
@@ -189,14 +280,16 @@ function TableDesign() {
               <div className="second-division">
                 {index !== 0 && (
                   <div className="orderButtons">
-                    <button
+                     <button
                       type="button"
+                      onClick={() => { handleServiceChangeOrderUp(ColumnValue,index,ColumnValue.length) }}
 
-                      className="add-btn"
-                         
+                      
+                      
                     >
-                      <span><BsFillArrowUpSquareFill /> </span>
-                    </button>
+                    <BsFillArrowUpSquareFill/> 
+                    </button> 
+                  
 
                   </div>
                 )}
@@ -208,9 +301,9 @@ function TableDesign() {
                       type="button"
 
                       className="add-btn"
-                    
+                      onClick={() => { handleServiceChangeOrderDown(ColumnValue,index,ColumnValue.length) }}
                     >
-                      <span><BsFillArrowDownSquareFill /> </span>
+                    <BsFillArrowDownSquareFill /> 
                     </button>
 
                   </div>)}

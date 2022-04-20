@@ -78,7 +78,7 @@ function FormView() {
 
   return (
     <div className='formviewMain'>
-      {FlaggedValue == false && ColumnValue.map((item, index) => (
+      {FlaggedValue === false && ColumnValue.map((item, index) => (
         <div className='formMain' key={index}>
 
           <div className='forms'>
@@ -103,7 +103,7 @@ function FormView() {
 
 
 
-      {FlaggedValue == true && ColumnValue.map((item, index) => (
+      {FlaggedValue === true && ColumnValue.map((item, index) => (
         <>
           {SpecificRecordValue.map((item1, index1) => (
             <div className='formMain' key={index1}>
