@@ -1,0 +1,12 @@
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 100vh;
+    
+  }
+  
+  .flex-item {
+    min-width: 50%;
+    min-height: 50%;
+  border: 3px solid black;
+  }

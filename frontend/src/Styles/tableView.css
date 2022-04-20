@@ -1,6 +1,7 @@
 .tableviewMain{
+    margin-top: 5px;
     height: 100%;
-    width: 100%;
+    width: 98%;
     position: relative;
     orientation: landscape;
 }
