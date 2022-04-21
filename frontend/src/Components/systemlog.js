@@ -10,7 +10,7 @@ function Systemlog() {
 
   return (
     <div className='systemlogMain'>
-
+     <h2>System Log(s)</h2>
       {SystemlogValue.map((item,index)=>(
         <p>{item}</p>
 
