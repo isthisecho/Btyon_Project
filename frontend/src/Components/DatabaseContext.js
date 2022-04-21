@@ -24,7 +24,7 @@ export const DatabaseProvider = props => {
     const [Update,setUpdate] =useState(false);
 
     async function fetchData() {
-        const response = await fetch("/columns")
+        const response = await fetch("http://localhost:3000/columns")
         const data = await response.json();
 
         data.sort(({ columnOrder: previousOrder }, { columnOrder: currentOrder }) => previousOrder - currentOrder);
@@ -34,7 +34,7 @@ export const DatabaseProvider = props => {
 
 
       async function fetchRecords() {
-        const response = await fetch("/api")
+        const response = await fetch("http://localhost:3000/api")
         const data = await response.json();
         setRecords(data);
        

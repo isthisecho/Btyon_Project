@@ -22,7 +22,7 @@ function TableView() {
      const [degerValue, setDegerValue] = deger;
      const[UpdateValue,setUpdateValue] = Update;
     const DeleteRecords = async (id) => {
-        await fetch('/api/' + id, {
+        await fetch('http://localhost:3000/api/' + id, {
           method: 'DELETE',
         })
         setSystemlogValue([...SystemlogValue,"Record Deleted: "+"ID :"+id+"'"])
@@ -33,7 +33,7 @@ function TableView() {
 
 
       const GetRecords =  async (id) => {
-        const response = await fetch('/api/'+id)
+        const response = await fetch('http://localhost:3000/api/'+id)
         const data = await response.json();
         setSpecificRecordValue(data);
         setSpecificRecordIDValue(id);

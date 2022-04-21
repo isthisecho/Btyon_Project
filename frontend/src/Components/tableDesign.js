@@ -1,7 +1,6 @@
-import React, { useState, useEffect ,useContext} from "react";
+import React, {useContext} from "react";
 import '../Styles/tableDesign.css';
 import { Helmet } from "react-helmet";
-import { BsFillArrowDownSquareFill, BsFillArrowUpSquareFill } from "react-icons/bs";
 import { DatabaseContext } from "./DatabaseContext";
 function TableDesign() {
 
@@ -26,7 +25,7 @@ function TableDesign() {
 
 
   const handleServiceEdit = (e, index, id,name) => {
-    fetch('/columns/' + id, {
+    fetch('http://localhost:3000/columns/' + id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -41,7 +40,7 @@ function TableDesign() {
   };
 
   const handleServiceRemove = (id,name) => {
-    fetch('/columns/' + id, {
+    fetch('http://localhost:3000/columns/' + id, {
       method: 'DELETE',
     }).then(setUpdateValue(true));
 
@@ -60,7 +59,7 @@ function TableDesign() {
       
       }
 
-      await fetch('/columns/', {
+      await fetch('http://localhost:3000/columns/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -81,7 +80,7 @@ function TableDesign() {
   const handleServiceChangeOrderUp = async (e,index, length) => {
     let temp = e[index].columnOrder;
  
-    await fetch('/columns/' + e[index]._id, {
+    await fetch('http://localhost:3000/columns/' + e[index]._id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -90,7 +89,7 @@ function TableDesign() {
       })
     })
 
-    await fetch('/columns/' + e[index-1]._id, {
+    await fetch('http://localhost:3000/columns/' + e[index-1]._id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -110,7 +109,7 @@ function TableDesign() {
   const handleServiceChangeOrderDown = async (e,index, length) => {
     let temp = e[index].columnOrder;
    
-    await fetch('/columns/' + e[index]._id, {
+    await fetch('http://localhost:3000/columns/' + e[index]._id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -119,7 +118,7 @@ function TableDesign() {
       })
     })
 
-    await fetch('/columns/' +e[index+1]._id, {
+    await fetch('http://localhost:3000/columns/' +e[index+1]._id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -140,7 +139,7 @@ function TableDesign() {
 
 
      const {value, checked } = e.target;
-     fetch('/columns/' + id, {
+     fetch('http://localhost:3000/columns/' + id, {
        method: 'PATCH',
        headers: { 'Content-Type': 'application/json' },
        body: JSON.stringify({
@@ -280,7 +279,7 @@ function TableDesign() {
                       
                       
                     >
-                    <BsFillArrowUpSquareFill/> 
+                     <span>&#8593;</span> 
                     </button> 
                   
 
@@ -296,7 +295,7 @@ function TableDesign() {
                       className="add-btn"
                       onClick={() => { handleServiceChangeOrderDown(ColumnValue,index,ColumnValue.length) }}
                     >
-                    <BsFillArrowDownSquareFill /> 
+                   <span>&#8595;</span> 
                     </button>
 
                   </div>)}

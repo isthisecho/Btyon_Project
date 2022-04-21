@@ -32,7 +32,7 @@ function FormView() {
 
 
   const handleServiceAdd = async (e, index) => {
-    await fetch('/api', {
+    await fetch('http://localhost:3000/api', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -56,7 +56,7 @@ function FormView() {
   };
 
   const handleServiceUpdate = (e, index, id) => {
-    fetch('/api/' + id, {
+    fetch('http://localhost:3000/api/' + id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
