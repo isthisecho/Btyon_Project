@@ -3,22 +3,20 @@ import '../Styles/tableDesign.css';
 import { Helmet } from "react-helmet";
 import { BsFillArrowDownSquareFill, BsFillArrowUpSquareFill } from "react-icons/bs";
 import { DatabaseContext } from "./DatabaseContext";
-import * as _ from 'lodash';
 function TableDesign() {
 
 
 
  
-
+  const {SystemLog} = useContext(DatabaseContext);
   const {formValues} = useContext(DatabaseContext);
   const {Column} = useContext(DatabaseContext);
   const {checked} =useContext(DatabaseContext);
   const {Update} = useContext(DatabaseContext);
-
   const [formValuesGet,setFormValues] = formValues;
   const [ColumnValue,setColumnValue] = Column;
-  const [columnOrderValue,setColumnOrderValue] = useState(0);
   const [UpdateValue,setUpdateValue] = Update;
+  const[SystemlogValue,setSystemlogValue] = SystemLog;
 
     const handleServiceChange =  (e) => {
     const { name, value } = e.target;
@@ -27,7 +25,7 @@ function TableDesign() {
   };
 
 
-  const handleServiceEdit = (e, index, id) => {
+  const handleServiceEdit = (e, index, id,name) => {
     fetch('/columns/' + id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -36,13 +34,18 @@ function TableDesign() {
       })
     }).then(setUpdateValue(true));
 
+    setSystemlogValue([...SystemlogValue,"Column name changed: '"+"'"+name+"' "+"- "+e.target.value+"'"])
+
+
 
   };
 
-  const handleServiceRemove = (id) => {
+  const handleServiceRemove = (id,name) => {
     fetch('/columns/' + id, {
       method: 'DELETE',
     }).then(setUpdateValue(true));
+
+    setSystemlogValue([...SystemlogValue,"Column deleted: '"+name+"'"])
   };
 
   const handleServiceAdd = async(e,index,length) => {
@@ -67,6 +70,8 @@ function TableDesign() {
         })
       })
       setUpdateValue(true);
+      setSystemlogValue([...SystemlogValue,"Column added: '"+formValuesGet.columnName+"'"])
+    
     
         
         
@@ -75,18 +80,7 @@ function TableDesign() {
   
   const handleServiceChangeOrderUp = async (e,index, length) => {
     let temp = e[index].columnOrder;
-    // let id =0;
-    // let column=0;
-
-
-    // for (let i = 0; i < length; i++) {
-    //   if(e[i].columnOrder == temp-1){
-    //     id=e[i]._id;
-    //     column =e[i].columnOrder
-    //   }
-    
-    // }
-    
+ 
     await fetch('/columns/' + e[index]._id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -104,8 +98,9 @@ function TableDesign() {
         columnOrder: temp
       })
     })
+    setSystemlogValue([...SystemlogValue,"Columns Moved: '"+e[index].columnName+"'"+"(up) - "+"'"+e[index-1].columnName+"'"+"(down)"])
     setUpdateValue(true);
-    
+
 
 
   };
@@ -114,18 +109,7 @@ function TableDesign() {
 
   const handleServiceChangeOrderDown = async (e,index, length) => {
     let temp = e[index].columnOrder;
-    // let id =0;
-    // let column=0;
-
-
-    // for (let i = 0; i < length; i++) {
-    //   if(e[i].columnOrder== temp+1){
-    //     id=e[i]._id;
-    //     column =e[i].columnOrder
-    //   }
-    
-    // }
-    
+   
     await fetch('/columns/' + e[index]._id, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -143,26 +127,35 @@ function TableDesign() {
         columnOrder: temp
       })
     })
-    setUpdateValue(true);
+    setSystemlogValue([...SystemlogValue,"Columns Moved: '"+e[index].columnName+"'"+"(down) - "+"'"+e[index+1].columnName+"'"+"(up)"])
+    setColumnValue([...ColumnValue])
     
+    setUpdateValue(true);
+ 
   
 
   };
 
-  const handlevisibleChange = (e, index, id) => {
+  const handlevisibleChange = (e, index, id,columnName) => {
 
 
-    const { name, type, value, checked } = e.target;
-    setFormValues({ ...formValuesGet, [name]: type === 'checkbox' ? checked : value });
+     const {value, checked } = e.target;
+     fetch('/columns/' + id, {
+       method: 'PATCH',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({
 
-    fetch('/columns/' + id, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-
-        isVisible: formValuesGet.isVisible
-      })
-    })
+         isVisible: checked
+       })
+     })
+     setUpdateValue(true);
+     if(checked==true){
+      setSystemlogValue([...SystemlogValue,"Column unhide '"+columnName+"'"])
+     }
+     if(checked==false){
+      setSystemlogValue([...SystemlogValue,"Column hide '"+columnName+"'"])
+     }
+    
 
   };
 
@@ -208,7 +201,7 @@ function TableDesign() {
 
           )} 
 
-          {ColumnValue.length !== 0 &&    ColumnValue.map((item, index) => (
+          {ColumnValue.length !== 0 &&  ColumnValue.map((item, index) => (
             <div key={index} className="services">
 
               <div className="delete-section">
@@ -217,7 +210,7 @@ function TableDesign() {
 
                 <button
                   type="button"
-                  onClick={() => handleServiceRemove(item._id)}
+                  onClick={() => handleServiceRemove(item._id,item.columnName)}
                   className="remove-btn"
                 >
                   <span>Delete</span>
@@ -230,12 +223,12 @@ function TableDesign() {
               </div>
               <div className="first-division">
 
-                <input key={index}
+                <input key={Math.random(10)}
                   name="columnName"
                   type="text"
                   id="service"
                   defaultValue={item.columnName}
-                  onChange={(e) => handleServiceEdit(e, index, item._id)}
+                  onChange={(e) => handleServiceEdit(e, index, item._id,item.columnName)}
 
                   required
                 />
@@ -310,7 +303,7 @@ function TableDesign() {
 
                 <div className="checkbox">
 
-                  <input className="form-check-input" name="isVisible" checked={checked ? !item.isVisible : item.isVisible} type="checkbox" onChange={(e) => handlevisibleChange(e, index, item._id)} />
+                  <input className="form-check-input" name="isVisible" checked={checked ? !item.isVisible : item.isVisible} type="checkbox" onChange={(e) => handlevisibleChange(e, index, item._id,item.columnName)} />
                   <label className="form-check-label" htmlFor="flexCheckDefault">is Visible</label>
                 </div>
 

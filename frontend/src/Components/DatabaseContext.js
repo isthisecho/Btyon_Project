@@ -11,8 +11,6 @@ export const DatabaseProvider = props => {
      
     const [Column, setColumn] = useState([]);
     const [Records, setRecords] = useState([]);
-
-
     const initialValues = { columnName: "", columnOrder: 1, isVisible: true }
     const [formValues, setFormValues] = useState(initialValues);
     const checked = initialValues.isVisible.type;
@@ -20,6 +18,7 @@ export const DatabaseProvider = props => {
     const [deger,setDeger] = useState([]);
     const [SpecificRecord,setScpecificRecord] =useState([]);
     const [SpecificRecordID,setScpecificRecordID] =useState([]);
+    const [SystemLog,setSystemLog] =useState([]);
     const [Flagged,setFlagged] = useState(false);
 
     const [Update,setUpdate] =useState(false);
@@ -37,8 +36,6 @@ export const DatabaseProvider = props => {
       async function fetchRecords() {
         const response = await fetch("/api")
         const data = await response.json();
-      
-  
         setRecords(data);
        
        
@@ -52,9 +49,9 @@ export const DatabaseProvider = props => {
        
         fetchRecords()
         setUpdate(false);
-      }, [Update]);
+      }, [Update,formValues]);
 
-
+    
 
 
   
@@ -68,6 +65,7 @@ export const DatabaseProvider = props => {
      SpecificRecordID:[SpecificRecordID,setScpecificRecordID],
      Flagged:[Flagged,setFlagged],
      Update:[Update,setUpdate],
+     SystemLog:[SystemLog,setSystemLog],
      checked,
      formValues:[formValues,setFormValues]}}>
     {props.children}

@@ -1,14 +1,20 @@
-import React ,{useState,useContext} from 'react'
+import React ,{useState,useContext, useEffect} from 'react'
 import '../Styles/systemlog.css'
 import { DatabaseContext } from './DatabaseContext'
 
 function Systemlog() {
+ const {SystemLog} = useContext(DatabaseContext);
+ const[SystemlogValue,setSystemlogValue] = SystemLog;
+
 
 
   return (
     <div className='systemlogMain'>
 
-      <h1>System Logs</h1>
+      {SystemlogValue.map((item,index)=>(
+        <p>{item}</p>
+
+    ))}
     </div>
   )
 }

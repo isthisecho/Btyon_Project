@@ -3,21 +3,24 @@ import '../Styles/formView.css';
 import { DatabaseContext } from './DatabaseContext';
 function FormView() {
 
-
+  const {SystemLog} = useContext(DatabaseContext);
   const { Column } = useContext(DatabaseContext);
   const { deger } = useContext(DatabaseContext);
   const { Flagged } = useContext(DatabaseContext);
   const { SpecificRecord } = useContext(DatabaseContext);
   const { SpecificRecordID } = useContext(DatabaseContext);
-  const {Update} =useContext(DatabaseContext);
 
+
+  const {Update} =useContext(DatabaseContext);
   const [UpdateValue,setUpdateValue] = Update
   const [ColumnValue, setColumnValue] = Column;
   const [degerValue, setDegerValue] = deger;
   const [FlaggedValue, setFlaggedValue] = Flagged;
   const [SpecificRecordValue, setSpecificRecordValue] = SpecificRecord;
   const [SpecificRecordIDValue, setSpecificRecordIDValue] = SpecificRecordID;
+  const[SystemlogValue,setSystemlogValue] = SystemLog;
 
+  
   const clearFields = () => {
     document.querySelectorAll("#inputID").forEach(
       input => (input.value = "")
@@ -28,8 +31,8 @@ function FormView() {
   }
 
 
-  const handleServiceAdd = (e, index) => {
-    fetch('/api', {
+  const handleServiceAdd = async (e, index) => {
+    await fetch('/api', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -42,10 +45,13 @@ function FormView() {
       }
 
       )
-    })
+    }).then(response => response.json()).then(data => setSystemlogValue([...SystemlogValue,"Record Added: "+"ID :"+data._id+"'"]))
+    setUpdateValue(true);
+   
+   
     clearFields();
-    setUpdateValue(true)
-
+  
+   
 
   };
 
@@ -66,6 +72,8 @@ function FormView() {
     })
      clearFields();
     setFlaggedValue(false);
+    setSystemlogValue([...SystemlogValue,"Record Updated: "+"ID :"+id+"'"])
+   
     setUpdateValue(true);
 
   };
@@ -91,7 +99,7 @@ function FormView() {
 
           {ColumnValue.length - 1 === index && (
             <div className='buttondiv'>
-              <button onClick={handleServiceAdd} >Save</button>
+              <button onClick={(e) =>handleServiceAdd(e)} >Save</button>
             </div>
 
 

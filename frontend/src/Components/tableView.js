@@ -4,24 +4,31 @@ import { DatabaseContext } from './DatabaseContext';
 
 function TableView() {
 
+    const {SystemLog} = useContext(DatabaseContext);
     const {Column} =useContext(DatabaseContext);
     const {Records}= useContext(DatabaseContext);
     const {SpecificRecord} = useContext(DatabaseContext);
     const {SpecificRecordID} = useContext(DatabaseContext);
     const {Flagged} = useContext(DatabaseContext);
     const { deger } = useContext(DatabaseContext);
+    const {Update} = useContext(DatabaseContext);
 
-
+    const[SystemlogValue,setSystemlogValue] = SystemLog;
     const [ColumnValues, setColumnValues]=Column;
     const [RecordsValues, setRecordsValues]=Records;
     const [SpecificRecordValue,setSpecificRecordValue] = SpecificRecord;
     const [SpecificRecordIDValue,setSpecificRecordIDValue] = SpecificRecordID;
     const [FlaggedValue, setFlaggedValue]=Flagged;
      const [degerValue, setDegerValue] = deger;
+     const[UpdateValue,setUpdateValue] = Update;
     const DeleteRecords = async (id) => {
         await fetch('/api/' + id, {
           method: 'DELETE',
         })
+        setSystemlogValue([...SystemlogValue,"Record Deleted: "+"ID :"+id+"'"])
+        setUpdateValue(true);
+       
+        
       };
 
 
@@ -32,7 +39,7 @@ function TableView() {
         setSpecificRecordIDValue(id);
         setFlaggedValue(true);
         setDegerValue(data[0].degerValue);
-        console.log(data[0].degerValue);
+     
       };
 
 
@@ -65,6 +72,7 @@ function TableView() {
                                     <td >
                                        
                                         <button className='buttonField' onClick={() => GetRecords(item2._id)}>Edit</button>
+                                       
                                         <button  className='buttonField' onClick={() => DeleteRecords(item2._id)} >Delete</button>
                                     </td>
                                     <td>{item2._id}</td>
@@ -75,8 +83,10 @@ function TableView() {
                                             <td key={itemindex2}>{item3[e.columnName]}</td>
                                             ))}
                                         </>                                                                                                                                                           
-                        ))}                                     
-                                </tr>                   
+                        ))}          
+                                      
+
+                                </tr>  
                         ))}
                     </tbody>
 
